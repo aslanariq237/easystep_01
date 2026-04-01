@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class ModuleAccessHistory extends Model
+{
+    protected $table = 'module_access_histories';
+    protected $fillable = [
+        'user_id',
+        'module_id',
+        'type',
+        'accessed_at',
+    ];
+
+    protected $casts = [
+        'accessed_at' => 'date',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function module()
+    {
+        return $this->belongsTo(Module::class, 'module_id', 'id');
+    }
+}

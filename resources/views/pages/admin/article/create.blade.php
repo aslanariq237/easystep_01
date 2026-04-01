@@ -1,0 +1,61 @@
+<x-app-layout>
+    <div class="min-h-screen bg-gray-100 py-8">
+        <div class="max-w-4xl mx-auto px-6">            
+
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">Buat Article Baru</h1>
+                    <p class="text-gray-500">Tambahkan artikel pembelajaran parenting</p>
+                </div>
+                <a href="{{ route('adminDashboard') }}" 
+                   class="text-gray-500 hover:text-gray-700 flex items-center gap-2">
+                    ← Kembali ke Dashboard
+                </a>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-sm p-8">
+
+                <form action="{{ route('articles.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                                        
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Judul Article</label>
+                        <input type="text" 
+                               name="title" 
+                               value="{{ old('title') }}"
+                               class="w-full border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none focus:border-purple-500"
+                               placeholder="Contoh: 5 Cara Menenangkan Anak Saat Tantrum" required>
+                    </div>                                                        
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gambar Cover / Thumbnail</label>
+                        <input type="file" 
+                               name="image"
+                               accept="image/jpeg,image/png,image/webp"
+                               class="w-full border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none">
+                        <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, WebP. Maksimal 5MB</p>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Isi Artikel</label>
+                        <textarea name="content" 
+                                  rows="15"
+                                  class="w-full border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none focus:border-purple-500"
+                                  placeholder="Tulis isi artikel lengkap di sini...">{{ old('content') }}</textarea>
+                    </div>
+
+                    <div class="flex justify-end gap-4">
+                        <a href="{{ route('adminDashboard') }}" 
+                           class="px-8 py-4 border border-gray-300 rounded-2xl font-medium text-gray-600 hover:bg-gray-50">
+                            Batal
+                        </a>
+                        <button type="submit"
+                                class="px-10 py-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-2xl transition">
+                            Simpan Article
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</x-app-layout>
