@@ -1,12 +1,9 @@
 <x-app-layout>    
-    <div class="min-h-screen bg-gray-50 pb-20">
-
-        <!-- HEADER / HERO -->
-        <header class=" text-white">            
-            <!-- Hero Banner -->
+    <div class="min-h-screen bg-gray-50 pb-20">        
+        <header class=" text-white">                        
             <div class="max-w-7xl mx-auto px-4 pt-6 pb-8">
                 <div class="relative rounded-3xl overflow-hidden h-[260px] md:h-[320px]">
-                    <img src="https://source.unsplash.com/random/1200x600/?mother,father,child" 
+                    <img src="{{ asset('assets/kid_learn_4.jpg')}}" 
                          alt="childrening Moment" 
                          class="absolute inset-0 w-full h-full object-cover">
                     
@@ -22,12 +19,8 @@
                 </div>
             </div>
         </header>
-
-        <div class="max-w-7xl mx-auto px-4 -mt-6 relative z-10">
-
-            <!-- Progress Section -->
-            <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-10">
-                <!-- Progress Orang Tua -->
+        <div class="max-w-7xl mx-auto px-4 -mt-6 relative z-10">            
+            <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-10">                
                 <div class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-3xl shadow p-6">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-10 h-10 bg-purple-100 rounded-2xl flex items-center justify-center text-2xl">👨‍👩</div>
@@ -40,26 +33,8 @@
                         <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all" 
                             style="width: {{ Auth::user()->children_progress }}%"></div>
                     </div>
-                </div>
-
-                <!-- Progress Anak -->
-                {{-- <div class="bg-white rounded-3xl shadow p-6">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 bg-blue-100 rounded-2xl flex items-center justify-center text-2xl">👶</div>
-                        <div class="flex-1">
-                            <p class="font-semibold text-gray-800">Progress Anak</p>
-                            <p class="text-sm text-gray-500">{{ Auth::user()->children_progress }}% selesai</p>
-                        </div>
-                    </div>
-                    <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all" 
-                            style="width: {{ Auth::user()->children_progress }}%"></div>
-                        <div class="h-full w-[70%] bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full"></div>
-                    </div>
-                </div> --}}
-            </div>
-
-            <!-- Lanjut di sini, yuk! -->
+                </div>                
+            </div>            
             <div class="mb-10">                
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -90,8 +65,6 @@
             </div>            
         </div>
     </div>
-
-    <!-- Bottom Navigation Mobile Only -->
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden z-50">
         <div class="max-w-xl mx-auto grid grid-cols-4 py-2 text-center">
             <a href="{{ route('dashboard') }}" class="flex flex-col items-center text-purple-600">

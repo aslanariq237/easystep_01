@@ -1,7 +1,5 @@
 <x-app-layout>
-    <div class="min-h-screen bg-gray-50 pb-20">
-
-        <!-- Header -->
+    <div class="min-h-screen bg-gray-50 pb-20">        
         <div class="bg-white border-b sticky top-0 z-50">
             <div class="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
                 <a href="{{ route('forum.index') }}" 
@@ -12,13 +10,8 @@
                 <span class="text-sm text-gray-500">Diskusi Parenting</span>
             </div>
         </div>
-
-        <div class="max-w-4xl mx-auto px-4 py-6">
-
-            <!-- Postingan Utama -->
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden mb-8">
-                
-                <!-- Header Post -->
+        <div class="max-w-4xl mx-auto px-4 py-6">            
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden mb-8">                            
                 <div class="px-6 pt-6 pb-4 border-b">
                     <div class="flex items-center gap-3">
                         <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-500 text-white rounded-2xl flex items-center justify-center text-2xl font-medium">
@@ -29,14 +22,10 @@
                             <p class="text-xs text-gray-500">{{ $forumPost->created_at->diffForHumans() }}</p>
                         </div>
                     </div>
-                </div>
-
-                <!-- Isi Post -->
+                </div>                
                 <div class="px-6 py-8 text-gray-700 leading-relaxed text-[17px]">
                     {{ $forumPost->content }}
-                </div>
-
-                <!-- Like & Comment Count -->
+                </div>                
                 <div class="px-6 py-5 border-t flex items-center gap-8 text-gray-500">
                     <div class="flex items-center gap-2">
                         <span class="text-2xl">❤️</span>
@@ -47,9 +36,7 @@
                         <span class="font-medium">{{ $forumPost->comments->count() }}</span>
                     </div>
                 </div>
-            </div>
-
-            <!-- Form Balas / Komentar -->
+            </div>            
             <div class="bg-white rounded-3xl shadow-sm p-6 mb-8">
                 <h3 class="font-semibold text-gray-800 mb-4">Berikan Komentar / Balasan</h3>
                 
@@ -68,9 +55,7 @@
                         </button>
                     </div>
                 </form>
-            </div>
-
-            <!-- Daftar Semua Komentar -->
+            </div>            
             <div>
                 <h3 class="font-semibold text-gray-800 mb-6 flex items-center gap-2">
                     <span>Komentar</span>

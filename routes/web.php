@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('', [ModuleController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('admin-dashboard', [ModuleController::class, 'adminDashboard'])->name('adminDashboard');
+Route::get('admin-dashboard', [ModuleController::class, 'adminDashboard'])
+    ->middleware('auth', 'role:admin')
+    ->name('adminDashboard');
 
 Route::get('/module_parent', [ModuleController::class, 'indexParent'])->name('module.indexParent');
 Route::get('/module_children', [ModuleController::class, 'indexChildren'])->name('module.indexChildren');
@@ -29,7 +31,7 @@ Route::middleware('auth')->group(function () {
         ->parameters(['forum' => 'forumPost']);
     Route::post('forum-comment/{forumPost}', [ForumController::class, 'storeComment'])->name('forum-comments.post');
     Route::post('/forum/{forumPost}/like', [ForumController::class, 'toggleLike'])->name('forum.like');
-    Route::get('modules/{$module}', [ForumController::class, 'detail'])->name('detail.module');
+    Route::get('/modules/{module}/detail/{section?}', [ModuleController::class, 'detail'])->name('module.detail');
 });
 
 require __DIR__.'/auth.php';

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Http\Request;
 use App\Models\Module;
+use App\Models\ModuleDetail;
 use App\Models\Article;
 use App\Models\ForumPost;
+use App\Models\ProgressActivities;
 use App\Models\User;
 use App\Models\ModuleAccessHistory;
 use Illuminate\Support\Str;
@@ -16,6 +19,13 @@ class ModuleController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function index()
+    {
+        $parentModules = Module::where('type', 'parent')            
+            ->get();        
+
+        return view('pages.user.modules.index_parent', compact('parentModules'));
+    }
     public function indexParent()
     {
         $parentModules = Module::where('type', 'parent')            
@@ -63,18 +73,54 @@ class ModuleController extends Controller
 
     }
 
-    public function detail(){
-        ModuleAccessHistory::updateOrCreate(
+    public function detail(Module $module, $sectionId = null){
+        $module->load('sections');        
+        if ($sectionId) {
+            $currentSection = ModuleDetail::where('module_id', $module->id)
+                                ->where('id', $sectionId)
+                                ->firstOrFail();
+        } else {
+            $currentSection = $module->sections()->orderBy('id')->first();
+        }
+
+        if (!$currentSection) {
+            abort(404, 'Sub-bab tidak ditemukan');
+        }
+
+        $this->recordProgress($module->id);        
+
+        $prevSection = ModuleDetail::where('module_id', $module->id)
+                        ->where('id', '<', $currentSection->id)
+                        ->orderBy('id', 'desc')
+                        ->first();
+
+        $nextSection = ModuleDetail::where('module_id', $module->id)
+                        ->where('id', '>', $currentSection->id)
+                        ->orderBy('id')
+                        ->first();
+
+        $totalSections = $module->sections->count();
+
+        return view('pages.user.modules.detail', compact(
+            'module',
+            'currentSection',
+            'prevSection',
+            'nextSection',
+            'totalSections',            
+        ));
+    }
+
+    private function recordProgress($moduleId)
+    {
+        ProgressActivities::updateOrCreate(
             [
-                'user_id' => auth()->id(),
-                'module_id' => $module->id,
-                'type'      => $module->type,
-                'accessed_at' => now()                
+                'user_id'   => Auth::id(),
+                'module_id' => $moduleId,
+            ],
+            [
+                'accessed_at' => now(),
             ]
         );
-        $module->load('user');
-
-        return view('pages.user.module.detail', compact('module'));
     }
 
     /**
@@ -95,9 +141,10 @@ class ModuleController extends Controller
             [                
                 'accessed_at'      => now(),
             ]
-        );        
+        );   
+        $progress = $module->getProgressForUser($user->id);        
 
-        return view('pages.user.modules.show', compact('module'));
+        return view('pages.user.modules.show', compact('module', 'progress'));        
     }
 
     //admin function disini
@@ -127,21 +174,44 @@ class ModuleController extends Controller
         $data = [
             'title'         => $request->title,
             'slug'          => Str::slug($request->title),
-            'description'   => $request->description,
-            'content'       => $request->content,
             'type'          => $request->type,
+            'description'   => $request->description,
+            'content'       => $request->content,                        
             'uploaded_by'   => $user->name,
         ];        
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('modules/images', 'public');            
-        }
-        
-        if ($request->hasFile('video')) {
-            $data['videos'] = $request->file('video')->store('modules/videos', 'public');            
-        }
+        }        
 
-        Module::create($data);
+        $module = Module::create($data);
+
+        foreach($request->sections as $index => $section){
+            $detailData = [                
+                'module_id'     => $module->id,
+                'content'       => $section['content'] ?? null,
+                'has_image'     => !empty($section['image']) ? 1 : 0,
+                'has_video'     => !empty($section['video']) ? 1 : 0,
+            ];
+
+            if($request->hasFile("sections.$index.image")){
+                $detailData['image'] = $request->file("sections.$index.image")
+                        ->store('module-details/images', 'public');
+            }
+            if($request->hasFile("sections.$index.video")){
+                $detailData['video'] = $request->file("sections.$index.video")
+                        ->store('module-details/video', 'public');
+            }
+            // if (!empty($section['video']) && $section['video']) {
+            //     $detailData['video'] = $section['video']->store('module-details/videos', 'public');
+            // }
+            // if (!empty($section['image']) && $section['image']) {
+            //     $detailData['image'] = $request->file('image')->store('modules/images', 'public');
+            //     $detailData['image'] = $section['image']->store('module-details/images', 'public');
+            // }                        
+
+            ModuleDetail::create($detailData);
+        }
 
         return redirect()->route('adminDashboard')
             ->with('success', 'Module Berhasil di Buat');

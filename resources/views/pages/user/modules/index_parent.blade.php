@@ -6,7 +6,7 @@
             <!-- Hero Banner -->
             <div class="max-w-7xl mx-auto px-4 pt-6 pb-8">
                 <div class="relative rounded-3xl overflow-hidden h-[260px] md:h-[320px]">
-                    <img src="https://source.unsplash.com/random/1200x600/?mother,father,child" 
+                    <img src="{{ asset('assets/kid_learn_3.jpg')}}" 
                          alt="Parenting Moment" 
                          class="absolute inset-0 w-full h-full object-cover">
                     

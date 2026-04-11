@@ -18,10 +18,8 @@ return new class extends Migration
             $table->enum('type', [
                 'parent',
                 'children'
-            ]);
-            $table->text('description');
-            $table->longText('content');
-            $table->string('videos')->nullable();
+            ]);            
+            $table->longText('description');            
             $table->string('image')->nullable();
             $table->string('uploaded_by');
             $table->timestamps();
