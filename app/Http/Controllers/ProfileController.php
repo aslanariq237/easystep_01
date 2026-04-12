@@ -14,6 +14,58 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+    public function show()
+    {
+        $user = Auth::user();
+
+        // Statistik Belajar
+        $totalModulesAccessed = ProgressActivity::where('user_id', $user->id)
+                                    ->distinct('module_id')
+                                    ->count('module_id');
+
+        $totalForumPosts = \App\Models\ForumPost::where('user_id', $user->id)->count();
+        
+        $totalForumComments = \App\Models\ForumComment::where('user_id', $user->id)->count();
+
+        // Module yang paling sering diakses (5 teratas)
+        $topModules = ModuleAccessHistory::where('user_id', $user->id)
+                        ->with('module')
+                        ->selectRaw('module_id, COUNT(*) as access_count')
+                        ->groupBy('module_id')
+                        ->orderBy('access_count', 'desc')
+                        ->limit(5)
+                        ->get();
+
+        return view('profile.show', compact(
+            'user',
+            'totalModulesAccessed',
+            'totalForumPosts',
+            'totalForumComments',
+            'topModules'
+        ));
+    }    
+    // public function edit()
+    // {
+    //     return view('profile.edit');
+    // }
+
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+        ]);
+
+        $user->update([
+            'name'  => $request->name,
+            'email' => $request->email,
+        ]);
+
+        return redirect()->route('profile.show')
+                         ->with('success', 'Profil berhasil diperbarui!');
+    }
     public function edit(Request $request): View
     {
         return view('profile.edit', [
