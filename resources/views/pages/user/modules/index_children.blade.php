@@ -38,29 +38,38 @@
             <div class="mb-10">                
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @for ($i = 1; $i <= 3; $i++)
+                    @foreach ($childrenModules as $module)
                     <div class="bg-white rounded-3xl overflow-hidden shadow hover:shadow-md transition border border-gray-100">
                         <div class="h-48 bg-gray-200 relative">
-                            <img src="https://source.unsplash.com/random/400x300/?childrening,child&sig={{ $i }}" 
-                                 alt="Course" class="w-full h-full object-cover">
-                            <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-2xl text-xs font-semibold shadow">
-                                6 Modul
+                            @if($module->image)
+                            <img src="{{ asset('storage/' . $module->image) }}" 
+                                alt="{{ $module->title }}" 
+                                class="w-full h-full object-cover">
+                            @else
+                            <div class="h-48 bg-gray-200 flex items-center justify-center text-6xl">
+                                📖
+                            </div>
+                            @endif
+                            {{-- <img src="https://source.unsplash.com/random/400x300/?parenting,child&sig=" 
+                                 alt="Course" class="w-full h-full object-cover"> --}}
+                            <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-2xl text-xs font-semibold shadow {{ $module->type === 'parent' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700' }}">
+                                {{ $module->type }}
                             </div>
                         </div>
                         <div class="p-6">
                             <h4 class="font-semibold text-gray-800 line-clamp-2 mb-3">
-                                Course {{ $i }}: Memahami Perkembangan Emosi Anak
-                            </h4>
+                                {{ $module->title }}
+                            </h4>                            
                             <p class="text-gray-500 text-sm line-clamp-2 mb-6">
                                 Membantu orang tua memahami tahapan emosi dan cara mendukung anak dengan baik.
                             </p>
-                            <button onclick="window.location.href='{{ route('modules.show', 'course-'.$i) }}'" 
+                            <button onclick="window.location.href='{{ route('modules.show', ''.$module->id) }}'" 
                                     class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-2xl font-medium transition">
                                 Lanjut Belajar →
                             </button>
                         </div>
                     </div>
-                    @endfor
+                    @endforeach
                 </div>
             </div>            
         </div>

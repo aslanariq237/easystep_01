@@ -38,9 +38,7 @@
                             style="width: {{ Auth::user()->parent_progress }}%"></div>
                     </div>
                 </div>                
-            </div>
-
-            <!-- Lanjut di sini, yuk! -->
+            </div>            
             <div class="mb-10">                
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

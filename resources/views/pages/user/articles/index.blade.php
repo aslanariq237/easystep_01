@@ -68,7 +68,7 @@
                                 {{ Str::limit(strip_tags($article->content), 160) }}
                             </p>
                             
-                            <a href="{{ route('articles.show', $article->slug) }}" 
+                            <a href="{{ route('articles.show', $article->id) }}" 
                                class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-2xl text-sm font-medium transition">
                                 Read More 
                                 <span class="text-lg leading-none">→</span>
@@ -136,11 +136,11 @@
                 </a>
                 <a href="{{ route('modules.index') }}" class="flex flex-col items-center text-gray-500 hover:text-gray-700">
                     <span class="text-3xl">📚</span>
-                    <span class="text-[10px] mt-1">Courses</span>
+                    <span class="text-[10px] mt-1">Modul</span>
                 </a>
                 <a href="{{ route('articles.index') }}" class="flex flex-col items-center text-purple-600">
                     <span class="text-3xl">📖</span>
-                    <span class="text-[10px] mt-1 font-medium">Articles</span>
+                    <span class="text-[10px] mt-1 font-medium">Artikel</span>
                 </a>
                 <a href="{{ route('forum.index') }}" class="flex flex-col items-center text-gray-500 hover:text-gray-700">
                     <span class="text-3xl">💬</span>

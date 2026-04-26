@@ -112,26 +112,94 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($recentModules as $module)
-                    <div class="bg-white rounded-3xl overflow-hidden shadow-sm">
-                        @if($module->image)
-                        <img src="{{ asset('storage/' . $module->image) }}" 
-                             alt="{{ $module->title }}" 
-                             class="w-full h-48 object-cover">
-                        @else
-                        <div class="h-48 bg-gray-200 flex items-center justify-center text-6xl">
-                            📖
-                        </div>
-                        @endif
-                        <div class="p-6">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="text-xs px-3 py-1 rounded-full {{ $module->type === 'parent' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700' }}">
-                                    {{ ucfirst($module->type) }}
-                                </span>
+                        <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group">
+                            
+                            @if($module->image)
+                            <img src="{{ asset('storage/' . $module->image) }}" 
+                                alt="{{ $module->title }}" 
+                                class="w-full h-48 object-cover">
+                            @else
+                            <div class="h-48 bg-gray-200 flex items-center justify-center text-6xl">
+                                📖
                             </div>
-                            <h4 class="font-semibold line-clamp-2">{{ $module->title }}</h4>
+                            @endif
+
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="text-xs px-3 py-1 rounded-full 
+                                        {{ $module->type === 'parent' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700' }}">
+                                        {{ ucfirst($module->type) }}
+                                    </span>
+                                </div>
+                                
+                                <h4 class="font-semibold line-clamp-2 mb-6 text-gray-800">{{ $module->title }}</h4>                                
+                                <div class="flex gap-2">                                    
+                                    <a href="{{ route('modules.show', $module) }}" 
+                                    class="flex-1 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-2xl text-sm font-medium transition">
+                                        <span>👁</span>
+                                        <span>Lihat</span>
+                                    </a>                                    
+                                    <a href="{{ route('modules.edit', $module) }}" 
+                                    class="flex-1 flex items-center justify-center gap-2 bg-blue-100 hover:bg-blue-200 text-blue-700 py-3 rounded-2xl text-sm font-medium transition">
+                                        <span>✏️</span>
+                                        <span>Edit</span>
+                                    </a>                                    
+                                    <form action="{{ route('modules.destroy', $module) }}" 
+                                        method="POST" 
+                                        onsubmit="return confirm('Yakin ingin menghapus module ini beserta semua sub-babnya?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                                class="flex-1 flex items-center justify-center gap-2 bg-red-100 hover:bg-red-200 text-red-700 py-3 rounded-2xl text-sm font-medium transition">
+                                            <span>🗑</span>
+                                            <span>Hapus</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    @endforeach
+                        @endforeach
+                    {{-- @foreach($recentModules as $module)
+                        <div class="bg-white rounded-3xl overflow-hidden shadow-sm">
+                            @if($module->image)
+                            <img src="{{ asset('storage/' . $module->image) }}" 
+                                alt="{{ $module->title }}" 
+                                class="w-full h-48 object-cover">
+                            @else
+                            <div class="h-48 bg-gray-200 flex items-center justify-center text-6xl">
+                                📖
+                            </div>
+                            @endif
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="text-xs px-3 py-1 rounded-full {{ $module->type === 'parent' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700' }}">
+                                        {{ ucfirst($module->type) }}
+                                    </span>
+                                </div>
+                                <h4 class="font-semibold line-clamp-2">{{ $module->title }}</h4>
+                                <div class="flex gap-2">                                    
+                                    <a href="{{ route('modules.show', $module) }}" 
+                                    class="flex-1 text-center bg-gray-100 hover:bg-gray-400 text-gray-700 py-2.5 rounded-2xl text-sm font-medium transition">
+                                        Lihat
+                                    </a>                                    
+                                    <a href="{{ route('modules.edit', $module) }}" 
+                                    class="flex-1 text-center bg-blue-100 hover:bg-blue-200 text-blue-700 py-2.5 rounded-2xl text-sm font-medium transition">
+                                        Edit
+                                    </a>                                    
+                                    <form action="{{ route('modules.destroy', $module) }}" 
+                                        method="POST" 
+                                        onsubmit="return confirm('Yakin ingin menghapus module ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                                class="flex-1 bg-red-100 hover:bg-red-400 text-red-700 py-2.5 rounded-2xl text-sm font-medium transition">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach --}}
                 </div>
             </div>
 

@@ -1,9 +1,6 @@
 <x-app-layout>    
-    <div class="min-h-screen bg-gray-50 pb-20">
-
-        <!-- HEADER / HERO -->
+    <div class="min-h-screen bg-gray-50 pb-20">        
         <header class=" text-white">            
-            <!-- Hero Banner -->
             <div class="max-w-7xl mx-auto px-4 pt-6 pb-8">
                 <div class="relative rounded-3xl overflow-hidden h-[260px] md:h-[320px]">
                     <img src="{{ asset('assets/kid_learn_1.jpg')}}" 
@@ -136,7 +133,7 @@
                             <p class="text-gray-500 text-sm line-clamp-3 mb-4">
                                 {{ Illuminate\Support\Str::limit($article->content, 50, '...') }}
                             </p>
-                            <a href="{{ route('articles.show', 'artikel-') }}" 
+                            <a href="{{ route('articles.show', $article->id) }}" 
                                class="text-purple-600 hover:text-purple-700 font-medium text-sm">
                                 Baca Selengkapnya →
                             </a>
