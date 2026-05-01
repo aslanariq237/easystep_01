@@ -241,17 +241,16 @@ class ModuleController extends Controller
             'sections.*.content' => 'nullable|string',            
         ]);
         try {
-            DB::beginTransaction();
+            DB::BeginTransaction();
             $module->update([
                 'title'       => $request->title,
                 'slug'        => Str::slug($request->title),
                 'type'        => $request->type,
                 'description' => $request->description,
             ]);
-            
             $module->sections()->delete();
 
-            foreach ($request->input('sections') as $index => $section) {
+            foreach($request->input('sections') as $index => $section){
                 $detailData = [
                     'user_id'    => Auth::id(),
                     'module_id'  => $module->id,
@@ -267,21 +266,19 @@ class ModuleController extends Controller
                 if ($request->hasFile("videos.$index")) {
                     $detailData['video'] = $request->file("videos.$index")->store('module-details/videos', 'public');
                 }
-        // return response()->json($request->hasFile("videos.1"));
 
                 ModuleDetail::create($detailData);
             }
             DB::commit();
             return redirect()->route('admin.dashboard')
                             ->with('success', 'Module berhasil diperbarui!');
-            }
         } catch (\Exception $e) {
             DB::rollback();
             \Log::error('Error saat update Module: ' . $e->getMessage());
             return redirect()->back()
                 ->with('error', 'Gagal membuat transaksi. Silakan coba lagi.')
                 ->withInput();
-        }                
+        }                       
     }
 
     /**
