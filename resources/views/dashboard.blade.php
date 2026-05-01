@@ -67,7 +67,11 @@
                     <div class="bg-white rounded-3xl overflow-hidden shadow hover:shadow-md transition border border-gray-100">
                         <div class="h-48 bg-gray-200 relative">
                             @if($module->image)
-                            <img src="{{ asset('storage/' . $module->image) }}" 
+                            <img src="{{ 
+                                    (isset($module->image) && Storage::disk('public')->exists($module->image))
+                                    ? asset('storage/' . $module->image) 
+                                    : asset('assets/' . $module->image)
+                                }}"  
                                 alt="{{ $module->title }}" 
                                 class="w-full h-full object-cover">
                             @else
