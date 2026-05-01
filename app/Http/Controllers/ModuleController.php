@@ -233,55 +233,55 @@ class ModuleController extends Controller
      */    
     public function update(Module $module, Request $request)
     {
-        // $request->validate([
-        //     'title'       => 'required|string|max:255',
-        //     'type'        => 'required|in:parent,children',
-        //     'description' => 'required|string',            
-        //     'sections.*.title'   => 'required|string|max:255',
-        //     'sections.*.content' => 'nullable|string',            
-        // ]);
-        // try {
-        //     DB::beginTransaction();
-        //     $module->update([
-        //         'title'       => $request->title,
-        //         'slug'        => Str::slug($request->title),
-        //         'type'        => $request->type,
-        //         'description' => $request->description,
-        //     ]);
+        $request->validate([
+            'title'       => 'required|string|max:255',
+            'type'        => 'required|in:parent,children',
+            'description' => 'required|string',            
+            'sections.*.title'   => 'required|string|max:255',
+            'sections.*.content' => 'nullable|string',            
+        ]);
+        try {
+            DB::beginTransaction();
+            $module->update([
+                'title'       => $request->title,
+                'slug'        => Str::slug($request->title),
+                'type'        => $request->type,
+                'description' => $request->description,
+            ]);
             
-        //     $module->sections()->delete();
+            $module->sections()->delete();
 
             foreach ($request->input('sections') as $index => $section) {
-        //         $detailData = [
-        //             'user_id'    => Auth::id(),
-        //             'module_id'  => $module->id,
-        //             'content'    => $section['content'] ?? null,
-        //             'has_image'  => $request->hasFile("images.$index") ? 1 : 0,
-        //             'has_video'  => $request->hasFile("videos.$index") ? 1 : 0,
-        //         ];
+                $detailData = [
+                    'user_id'    => Auth::id(),
+                    'module_id'  => $module->id,
+                    'content'    => $section['content'] ?? null,
+                    'has_image'  => $request->hasFile("images.$index") ? 1 : 0,
+                    'has_video'  => $request->hasFile("videos.$index") ? 1 : 0,
+                ];
 
-        //         if ($request->hasFile("images.$index")) {
-        //             $detailData['image'] = $request->file("images.$index")->store('module-details/images', 'public');
-        //         }
+                if ($request->hasFile("images.$index")) {
+                    $detailData['image'] = $request->file("images.$index")->store('module-details/images', 'public');
+                }
 
-        //         if ($request->hasFile("videos.$index")) {
-        //             $detailData['video'] = $request->file("videos.$index")->store('module-details/videos', 'public');
-        //         }
-        return response()->json($request->hasFile("videos.1"));
+                if ($request->hasFile("videos.$index")) {
+                    $detailData['video'] = $request->file("videos.$index")->store('module-details/videos', 'public');
+                }
+        // return response()->json($request->hasFile("videos.1"));
 
-        //         ModuleDetail::create($detailData);
-        //     }
-        //     DB::commit();
-        //     return redirect()->route('admin.dashboard')
-        //                     ->with('success', 'Module berhasil diperbarui!');
+                ModuleDetail::create($detailData);
             }
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     \Log::error('Error saat update Module: ' . $e->getMessage());
-        //     return redirect()->back()
-        //         ->with('error', 'Gagal membuat transaksi. Silakan coba lagi.')
-        //         ->withInput();
-        // }                
+            DB::commit();
+            return redirect()->route('admin.dashboard')
+                            ->with('success', 'Module berhasil diperbarui!');
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Error saat update Module: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Gagal membuat transaksi. Silakan coba lagi.')
+                ->withInput();
+        }                
     }
 
     /**
