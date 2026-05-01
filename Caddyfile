@@ -6,7 +6,7 @@
 	root * /app/public
 
 	# Allow Vite-compiled CSS and JS assets to load
-	header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'"
+	header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'"
 
 	# php_server handles static file serving, PHP execution, and Laravel routing
 	php_server
