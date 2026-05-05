@@ -6,9 +6,9 @@
             
             <div class="absolute top-10 left-10">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-purple-600 text-4xl font-bold shadow-lg">
+                    {{-- <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-purple-600 text-4xl font-bold shadow-lg">
                         Welcome Back!
-                    </div>
+                    </div> --}}
                     <span class="text-3xl font-bold">EasyStep</span>
                 </div>
             </div>
