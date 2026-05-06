@@ -10,6 +10,7 @@ class ModuleDetail extends Model
     protected $primaryKey = 'id';
     protected $fillable = [        
         'module_id',
+        'title',
         'content',
         'has_image',
         'has_video',

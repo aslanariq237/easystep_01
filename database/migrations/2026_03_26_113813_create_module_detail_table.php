@@ -17,6 +17,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('module')
                 ->onDelete('cascade');
+            $table->text('title');
             $table->longText('content');
             $table->boolean('has_image')->default(false);
             $table->boolean('has_video')->default(false);

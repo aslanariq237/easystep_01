@@ -13,10 +13,7 @@
                 </div>
             </div>
         </div>
-        <div class="max-w-4xl mx-auto px-4 py-10">            
-            <h1 class="text-3xl font-bold text-gray-800 mb-8">
-                {{ $currentSection->title }}
-            </h1>            
+        <div class="max-w-4xl mx-auto px-4 py-10 mt-2">                        
             @if($currentSection->image)
             <div class="mb-10 rounded-3xl overflow-hidden shadow-sm">
                 <img src="{{ asset('storage/' . $currentSection->image) }}" 
@@ -24,6 +21,9 @@
                      class="w-full h-auto">
             </div>
             @endif            
+            <h1 class="text-3xl font-bold text-gray-800 mb-8">
+                {{ $currentSection->title }}
+            </h1>
             @if($currentSection->content)
             <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed mb-12">
                 {!! nl2br(e($currentSection->content)) !!}

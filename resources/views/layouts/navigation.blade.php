@@ -6,7 +6,7 @@
                     E
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold text-white">EasyStep</h1>
+                    <a href="/"><h1 class="text-xl font-bold text-white">EasyStep</h1></a>
                     <p class="text-[10px] text-gray-200 -mt-1">Parenting Journey</p>
                 </div>
             </div>            
@@ -62,11 +62,10 @@
                             <p class="font-medium">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
                         </div>
-                        <a href="#" class="block px-5 py-3 hover:bg-gray-50 text-sm">Profile Saya</a>
+                        <a href="/profile" class="block px-5 py-3 hover:bg-gray-50 text-sm">Profile Saya</a>
                         @if(Auth::user()->hasRole('admin'))
                             <a href="/admin-dashboard" class="block px-5 py-3 hover:bg-gray-50 text-sm">Admin Dashboard</a>
-                        @endif
-                        <a href="#" class="block px-5 py-3 hover:bg-gray-50 text-sm">Pengaturan</a>
+                        @endif                        
                         <div class="border-t my-1"></div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

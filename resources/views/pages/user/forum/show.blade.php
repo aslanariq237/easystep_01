@@ -40,15 +40,18 @@
             <div class="bg-white rounded-3xl shadow-sm p-6 mb-8">
                 <h3 class="font-semibold text-gray-800 mb-4">Berikan Komentar / Balasan</h3>
                 
-                <form action="{{ route('forum-comments.post', $forumPost) }}" method="POST">
+                <form action="{{ route('forum-comments.post', $forumPost) }}" method="POST" id="forumForm">
                     @csrf
-                    <textarea name="content" 
+                    <textarea name="content" id="content"
                               rows="4"
                               class="w-full border border-gray-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-purple-300 resize-none"
                               placeholder="Tulis komentar atau balasanmu di sini..."></textarea>
+                    <div id="content-error" class="text-sm text-red-500 mt-2">
+                        Pesan harus minimal 10 karakter.
+                    </div>
                     
                     <div class="flex justify-end mt-4">
-                        <button type="submit"
+                        <button type="submit" id="submit-btn"
                                 class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-2xl font-medium flex items-center gap-2 transition">
                             Kirim Komentar 
                             <span class="text-xl">→</span>
@@ -115,4 +118,31 @@
         </div>
 
     </div>
+    <script>
+        const form = document.getElementById('forumForm');
+        const textarea = document.getElementById('content');
+        const errorDiv = document.getElementById('content-error');
+        const submitBtn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', function(e) {
+            const content = textarea.value.trim();
+            
+            if (content.length < 10) {
+                e.preventDefault();
+                errorDiv.textContent = 'Pesan harus minimal 10 karakter.';
+                errorDiv.classList.remove('hidden');
+                textarea.classList.add('border-red-500');
+                return false;
+            }
+        });
+
+        // Real-time validation
+        textarea.addEventListener('input', function() {
+            const content = this.value.trim();
+            if (content.length >= 10) {
+                errorDiv.classList.add('hidden');
+                textarea.classList.remove('border-red-500');
+            }
+        });
+    </script>
 </x-app-layout>

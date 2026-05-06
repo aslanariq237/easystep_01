@@ -37,7 +37,7 @@
                               class="w-full border border-gray-200 rounded-2xl px-5 py-4 focus:outline-none focus:border-purple-300 resize-none"
                               placeholder="Type your text..."></textarea>
                               
-                    <div id="content-error" class="text-slate-100 text-sm mt-2">
+                    <div id="content-error" class="text-sm text-red-500 mt-2">
                         Pesan harus minimal 10 karakter.
                     </div>
                     <div class="flex justify-end mt-4">

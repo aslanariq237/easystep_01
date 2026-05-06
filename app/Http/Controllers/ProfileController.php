@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\ForumPost;
+use App\Models\ForumComment;
+use App\Models\ModuleAccessHistory;
 
 class ProfileController extends Controller
 {
@@ -19,13 +22,13 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         // Statistik Belajar
-        $totalModulesAccessed = ProgressActivity::where('user_id', $user->id)
+        $totalModulesAccessed = ModuleAccessHistory::where('user_id', $user->id)
                                     ->distinct('module_id')
                                     ->count('module_id');
 
-        $totalForumPosts = \App\Models\ForumPost::where('user_id', $user->id)->count();
+        $totalForumPosts = ForumPost::where('user_id', $user->id)->count();
         
-        $totalForumComments = \App\Models\ForumComment::where('user_id', $user->id)->count();
+        $totalForumComments = ForumComment::where('user_id', $user->id)->count();
 
         // Module yang paling sering diakses (5 teratas)
         $topModules = ModuleAccessHistory::where('user_id', $user->id)
@@ -35,7 +38,14 @@ class ProfileController extends Controller
                         ->orderBy('access_count', 'desc')
                         ->limit(5)
                         ->get();
-
+        $data = [
+            $user,
+            $totalModulesAccessed,
+            $totalForumPosts,
+            $totalForumComments,
+            $topModules
+        ];
+        // return response()->json($data);
         return view('profile.show', compact(
             'user',
             'totalModulesAccessed',

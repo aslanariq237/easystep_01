@@ -20,8 +20,8 @@ Route::get('/module_parent', [ModuleController::class, 'indexParent'])->name('mo
 Route::get('/module_children', [ModuleController::class, 'indexChildren'])->name('module.indexChildren');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile/{module}', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile_edit/', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
