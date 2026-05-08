@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Hewan Seru - EasyStep</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: system-ui, sans-serif; }
+        .option { transition: all 0.3s; }
+        .option:hover { transform: scale(1.05); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-emerald-100 min-h-screen">
+
+    <div class="max-w-2xl mx-auto p-6">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-emerald-600 mb-2">🐾 Quiz Hewan Seru!</h1>
+            <p class="text-xl text-gray-700" id="question">Loading pertanyaan...</p>
+        </div>
+
+        <div class="space-y-4" id="options"></div>
+
+        <div id="result" class="hidden mt-8 text-center text-3xl font-bold"></div>
+        
+        <div class="text-center mt-8">
+            <button onclick="nextQuestion()" id="next-btn"
+                    class="hidden bg-emerald-600 text-white px-8 py-3 rounded-2xl font-medium">
+                Pertanyaan Selanjutnya →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "Hewan apa yang suka makan wortel?",
+                options: ["Singa", "Kelinci", "Harimau", "Buaya"],
+                answer: 1
+            },
+            {
+                q: "Hewan apa yang memiliki leher paling panjang?",
+                options: ["Gajah", "Jerapah", "Kuda", "Zebra"],
+                answer: 1
+            },
+            {
+                q: "Suara apa yang dihasilkan oleh bebek?",
+                options: ["Miau", "Guk-guk", "Kwek-kwek", "Mbek-mbek"],
+                answer: 2
+            },
+            {
+                q: "Hewan apa yang bisa terbang?",
+                options: ["Ikan", "Burung", "Ular", "Kucing"],
+                answer: 1
+            },
+            {
+                q: "Hewan apa yang paling besar di darat?",
+                options: ["Gajah", "Kuda", "Singa", "Beruang"],
+                answer: 0
+            }
+        ];
+
+        let current = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const q = questions[current];
+            document.getElementById('question').textContent = q.q;
+
+            let html = '';
+            q.options.forEach((opt, i) => {
+                html += `
+                    <button onclick="checkAnswer(${i})" 
+                            class="option w-full text-left p-5 bg-white hover:bg-emerald-50 border-2 border-emerald-200 rounded-2xl text-lg">
+                        ${opt}
+                    </button>`;
+            });
+            document.getElementById('options').innerHTML = html;
+            document.getElementById('result').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+        }
+
+        function checkAnswer(selected) {
+            const q = questions[current];
+            const resultDiv = document.getElementById('result');
+
+            if (selected === q.answer) {
+                score++;
+                resultDiv.innerHTML = `<span class="text-green-600">🎉 Benar! Hebat!</span>`;
+            } else {
+                resultDiv.innerHTML = `<span class="text-red-600">😔 Jawaban yang benar adalah: ${q.options[q.answer]}</span>`;
+            }
+
+            resultDiv.classList.remove('hidden');
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            current++;
+            if (current < questions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById('options').innerHTML = `
+                    <div class="text-center py-12">
+                        <h2 class="text-4xl mb-4">🎉 Selesai!</h2>
+                        <p class="text-3xl">Skor kamu: <span class="text-emerald-600 font-bold">${score}/${questions.length}</span></p>
+                        <p class="mt-4 text-gray-600">Kamu hebat belajar tentang hewan!</p>
+                    </div>`;
+            }
+        }
+
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>

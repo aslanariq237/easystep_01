@@ -14,7 +14,10 @@ class ModuleDetail extends Model
         'content',
         'has_image',
         'has_video',
+        'has_game',
         'image',
-        'video'
+        'video',
+        'game_type',
+        'game_file'
     ];
 }

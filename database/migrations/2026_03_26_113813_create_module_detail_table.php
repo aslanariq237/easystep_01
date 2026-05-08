@@ -19,10 +19,18 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->text('title');
             $table->longText('content');
+            $table->integer('order')->default(0);
             $table->boolean('has_image')->default(false);
             $table->boolean('has_video')->default(false);
+            $table->boolean('has_game')->default(false);
             $table->string('image')->nullable();
             $table->string('video')->nullable();
+            $table->enum('game_type', [
+                'quiz',
+                'memory',
+                'matching'            
+            ])->nullable();            
+            $table->string('game_file')->nullable();            
             $table->timestamps();
         });
     }
