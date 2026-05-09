@@ -192,7 +192,8 @@ class ModuleController extends Controller
                 'module_id'     => $module->id,
                 'content'       => $section['content'] ?? null,
                 'has_image'     => !empty($section['image']) ? 1 : 0,
-                'has_video'     => !empty($section['video']) ? 1 : 0,
+                'has_video'     => !empty($section['video']) ? 1 : 0,                
+                'has_game'     => !empty($section['game_type']) ? 1 : 0,
             ];
 
             if($request->hasFile("sections.$index.image")){
@@ -203,13 +204,15 @@ class ModuleController extends Controller
                 $detailData['video'] = $request->file("sections.$index.video")
                         ->store('module-details/video', 'public');
             }
-            // if (!empty($section['video']) && $section['video']) {
-            //     $detailData['video'] = $section['video']->store('module-details/videos', 'public');
-            // }
-            // if (!empty($section['image']) && $section['image']) {
-            //     $detailData['image'] = $request->file('image')->store('modules/images', 'public');
-            //     $detailData['image'] = $section['image']->store('module-details/images', 'public');
-            // }                        
+            if($request->game_type === 'quiz'){
+                $detailData['game_file'] = 'games/quiz/index.html';
+            }
+            if($request->game_type === 'memory'){
+                $detailData['game_file'] = 'games/memory/index.html';
+            }
+            if($request->game_type === 'matching'){
+                $detailData['game_file'] = 'games/matching/index.html';
+            }
 
             ModuleDetail::create($detailData);
         }
