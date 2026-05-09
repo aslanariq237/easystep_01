@@ -39,11 +39,13 @@
                 </div>
             </div>
             @endif 
-            <iframe src="{{ asset('games/quiz/index.html') }}" 
-                width="100%" 
-                height="650" 
-                style="border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-            </iframe>           
+            @if($currentSection->game_type)
+                <iframe src="{{ asset('games/quiz/index.html') }}" 
+                    width="100%" 
+                    height="650" 
+                    style="border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                </iframe>   
+            @endif
             <div class="flex justify-between items-center mt-16 pt-8 border-t">
                 @if($prevSection)
                     <a href="{{ route('module.detail', ['module' => $module, 'section' => $prevSection]) }}" 
