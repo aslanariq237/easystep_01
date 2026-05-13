@@ -188,7 +188,8 @@ class ModuleController extends Controller
         $module = Module::create($data);
 
         foreach($request->sections as $index => $section){
-            $detailData = [                
+            $detailData = [  
+                'title'         => $section['title'],
                 'module_id'     => $module->id,
                 'content'       => $section['content'] ?? null,
                 'has_image'     => !empty($section['image']) ? 1 : 0,
