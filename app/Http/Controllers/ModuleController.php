@@ -66,7 +66,7 @@ class ModuleController extends Controller
         $modules = Module::where('type', 'parent')
                         ->paginate(3);
         $articles = Article::paginate(3);
-        return response()->json($modules);
+                
         return view('dashboard', compact('modules', 'articles'));
     }
 
