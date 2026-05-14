@@ -15,8 +15,8 @@ class ModuleDetail extends Model
         'has_image',
         'has_video',
         'has_game',
-        'image',
-        'video',
+        'image_url',
+        'video_url',
         'game_type',
         'game_file'
     ];

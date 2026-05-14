@@ -19,7 +19,7 @@ class ModuleSeeder extends Seeder
             'slug' => 'mengajarkan-disiplin-sejak-dini',
             'type' => 'parent',
             'description' => 'Panduan bagi orang tua dalam menanamkan kebiasaan disiplin pada anak melalui rutinitas harian yang konsisten dan penuh kasih.',
-            'image' => 'modules/images/kid_learn_1.jpg',
+            'image_url' => 'https://plus.unsplash.com/premium_photo-1681998526798-c95dae5cfc6d?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8',
             'uploaded_by' => 'admin',
         ]);
 
@@ -28,7 +28,7 @@ class ModuleSeeder extends Seeder
             'slug' => 'pembelajaran-tentang-hewan',
             'type' => 'children',
             'description' => 'Panduan bagi orang tua dalam menanamkan kebiasaan disiplin pada anak melalui rutinitas harian yang konsisten dan penuh kasih.',
-            'image' => 'modules/images/kid_learn_3.jpg',
+            'image_url' => 'https://blog.klikindomaret.com/wp-content/uploads/2023/07/picture-family-sitting-painting-together-scaled.jpg',
             'uploaded_by' => 'admin',
         ]);
 
@@ -42,8 +42,9 @@ Melalui rutinitas harian yang baik, anak akan belajar mengelola waktu, mengemban
                 'order' => 1,
                 'has_image' => true,
                 'has_video' => false,
-                'image' => 'module-details/images/kid_learn_3.jpg',
-                'video' => null,
+                'has_game'  => false,
+                'image_url' => 'https://globalprestasi.sch.id/wp-content/uploads/2023/10/peran-orang-tua-dalam-mendidik-anak.jpg',
+                'video_url' => null,
             ],
             [                
                 'module_id' => 1,
@@ -55,8 +56,9 @@ Konsistensi ini akan membuat anak merasa aman dan paham bahwa aturan bukan sesua
                 'order' => 2,
                 'has_image' => false,
                 'has_video' => true,
-                'image' => null,
-                'video' => 'https://youtu.be/CUg9p9QDiRM?si=AMFqDp_VANmIPlpR',
+                'has_game'  => false,
+                'image_url' => null,
+                'video_url' => 'https://youtu.be/CUg9p9QDiRM?si=AMFqDp_VANmIPlpR',
             ],
             [                
                 'module_id' => 2,
@@ -66,8 +68,8 @@ Konsistensi ini akan membuat anak merasa aman dan paham bahwa aturan bukan sesua
                 'has_image' => false,
                 'has_video' => false,
                 'has_game'  => true,
-                'image' => null,
-                'video' => null,
+                'image_url' => null,
+                'video_url' => null,
                 'game_type' => 'quiz',
                 'game_file' => 'games/quiz/index.html'
             ],

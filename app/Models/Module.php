@@ -13,7 +13,7 @@ class Module extends Model
         'slug',
         'type',        
         'description',        
-        'image',
+        'image_url',
         'uploaded_by'
     ];  
     

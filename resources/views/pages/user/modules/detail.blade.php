@@ -14,9 +14,9 @@
             </div>
         </div>
         <div class="max-w-4xl mx-auto px-4 py-10 mt-2">                        
-            @if($currentSection->image)
+            @if($currentSection->image_url)
             <div class="mb-10 rounded-3xl overflow-hidden shadow-sm">
-                <img src="{{ asset('storage/' . $currentSection->image) }}" 
+                <img src="{{ $currentSection->image_url }}" 
                      alt="{{ $currentSection->title }}"
                      class="w-full h-auto">
             </div>
@@ -29,14 +29,20 @@
                 {!! nl2br(e($currentSection->content)) !!}
             </div>
             @endif            
-            @if($currentSection->video)
+            @if($currentSection->video_url)
             <div class="mb-12">
                 <h3 class="font-semibold mb-4 text-gray-800">Video Pembelajaran</h3>
-                <div class="bg-black rounded-3xl overflow-hidden aspect-video">
-                    <video controls class="w-full h-full">
-                        <source src="{{ asset('storage/' . $currentSection->video) }}" type="video/mp4">
-                    </video>
-                </div>
+                @php
+                    preg_match('/[\\?\\&]v=([^\\?\\&]+)/', $currentSection->video_url, $matches);
+                    $videoId = $matches[1] ?? str_replace('https://youtu.be/', '', $currentSection->video_url);
+                @endphp
+                
+                <iframe width="100%" height="100%" 
+                        src="https://www.youtube.com/embed/{{ $videoId }}" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
             </div>
             @endif 
             @if($currentSection->game_type)

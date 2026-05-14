@@ -13,9 +13,9 @@
         </div>
 
         <div class="max-w-4xl mx-auto px-4 py-10">            
-            @if($article->image)
+            @if($article->image_url)
             <div class="rounded-3xl overflow-hidden shadow-md mb-10">
-                <img src="{{ asset('storage/' . $article->image) }}" 
+                <img src="{{ $article->image_url }}" 
                      alt="{{ $article->title }}"
                      class="w-full h-auto max-h-[500px] object-cover">
             </div>

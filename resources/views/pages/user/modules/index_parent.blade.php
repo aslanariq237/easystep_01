@@ -45,8 +45,8 @@
                     @foreach ($parentModules as $module)
                     <div class="bg-white rounded-3xl overflow-hidden shadow hover:shadow-md transition border border-gray-100">
                         <div class="h-48 bg-gray-200 relative">
-                            @if($module->image)
-                            <img src="{{ asset('storage/' . $module->image) }}" 
+                            @if($module->image_url)
+                            <img src="{{ $module->image_url }}" 
                                 alt="{{ $module->title }}" 
                                 class="w-full h-full object-cover">
                             @else

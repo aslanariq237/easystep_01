@@ -11,7 +11,7 @@ class Article extends Model
         'title',
         'slug',
         'content',
-        'image',
+        'image_url',
         'created_by',
         'uploaded_by',
     ];

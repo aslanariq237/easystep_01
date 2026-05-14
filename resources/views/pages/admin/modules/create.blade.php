@@ -1,22 +1,16 @@
 <x-app-layout>
     <div class="min-h-screen bg-gray-100 py-8">
         <div class="max-w-5xl mx-auto px-6">
-
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold text-gray-800">Buat Module Baru</h1>
                 <a href="{{ route('adminDashboard') }}" class="text-gray-500 hover:text-gray-700">← Kembali</a>
             </div>
-
             <div class="bg-white rounded-3xl shadow-sm p-8">
 
                 <form action="{{ route('modules.store') }}" 
                       method="POST" 
-                      enctype="multipart/form-data" 
                       id="moduleForm">
-
-                    @csrf
-
-                    <!-- Module Utama -->
+                    @csrf                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Judul Module</label>
@@ -30,23 +24,20 @@
                                 <option value="children">Children Module</option>
                             </select>
                         </div>
-                    </div>
-
+                    </div>                    
                     <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Gambar Cover (Opsional)</label>
-                        <input type="file" name="image" accept="image/*" 
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gambar Cover (URL)</label>
+                        <input type="url" name="image_url" 
+                               placeholder="https://example.com/gambar.jpg" 
                                class="w-full border border-gray-300 rounded-2xl px-5 py-4">
+                        <p class="text-xs text-gray-500 mt-1">Masukkan link gambar (Google, Unsplash, dll)</p>
                     </div>
-
                     <div class="mb-10">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Module</label>
                         <textarea name="description" rows="3" 
                                   class="w-full border border-gray-300 rounded-2xl px-5 py-4"></textarea>
                     </div>
-
                     <hr class="my-10">
-
-                    <!-- Dynamic Sub-bab -->
                     <div id="sections-container">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-2xl font-semibold">Sub-bab / Section</h2>
@@ -98,55 +89,36 @@
                                       class="w-full border border-gray-300 rounded-2xl px-5 py-4"></textarea>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <!-- Has Image -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">                            
                             <div>
-                                <label class="flex items-center gap-2 mb-3 cursor-pointer">
-                                    <input type="checkbox" class="has-image-check rounded-md" onchange="toggleInput(this)">
-                                    <span class="text-sm font-medium text-gray-700">Has Image</span>
-                                </label>
-                                <input type="file" name="images[${sectionCount-1}]" accept="image/*" 
-                                       class="image-input w-full hidden border border-gray-300 rounded-2xl px-5 py-4">
-                            </div>
-
-                            <!-- Has Video -->
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Gambar (URL)</label>
+                                <input type="url" 
+                                       name="sections[${sectionCount-1}][image_url]" 
+                                       placeholder="https://..." 
+                                       class="w-full border border-gray-300 rounded-2xl px-5 py-4">
+                            </div>                            
                             <div>
-                                <label class="flex items-center gap-2 mb-3 cursor-pointer">
-                                    <input type="checkbox" class="has-video-check rounded-md" onchange="toggleInput(this)">
-                                    <span class="text-sm font-medium text-gray-700">Has Video</span>
-                                </label>
-                                <input type="file" name="videos[${sectionCount-1}]" accept="video/mp4,video/webm" 
-                                       class="video-input w-full hidden border border-gray-300 rounded-2xl px-5 py-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Video (YouTube URL)</label>
+                                <input type="url" 
+                                       name="sections[${sectionCount-1}][video_url]" 
+                                       placeholder="https://youtu.be/..." 
+                                       class="w-full border border-gray-300 rounded-2xl px-5 py-4">
                             </div>
-
-                            <!-- Has Game -->
-                            <div>
-                                <label class="flex items-center gap-2 mb-3 cursor-pointer">
-                                    <input type="checkbox" class="has-game-check rounded-md" onchange="toggleInput(this)">
-                                    <span class="text-sm font-medium text-gray-700">Has Game</span>
-                                </label>
-                                <select name="sections[${sectionCount-1}][game_type]" 
-                                        class="game-input w-full border border-gray-300 rounded-2xl px-5 py-4 hidden">
-                                    <option value="">Pilih Game</option>
-                                    <option value="quiz">Quiz</option>
-                                    <option value="matching">Matching</option>
-                                    <option value="memory">Memory Match</option>
-                                </select>
-                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Mini Game (Opsional)</label>
+                            <select name="sections[${sectionCount-1}][game_type]" 
+                                    class="w-full border border-gray-300 rounded-2xl px-5 py-4">
+                                <option value="">Tidak Ada Game</option>
+                                <option value="quiz">Quiz</option>
+                                <option value="memory">Memory Match</option>
+                            </select>
                         </div>
                     </div>
                 </div>
             `;
 
             container.insertAdjacentHTML('beforeend', html);
-        }
-
-        function toggleInput(checkbox) {
-            const parentDiv = checkbox.parentElement.parentElement;
-            const input = parentDiv.querySelector('input[type="file"], select');
-            if (input) {
-                input.classList.toggle('hidden', !checkbox.checked);
-            }
         }
 
         function removeSection(btn) {

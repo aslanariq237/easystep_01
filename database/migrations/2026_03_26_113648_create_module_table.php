@@ -20,7 +20,7 @@ return new class extends Migration
                 'children'
             ]);            
             $table->longText('description');            
-            $table->string('image')->nullable();
+            $table->string('image_url')->nullable();
             $table->string('uploaded_by');
             $table->timestamps();
         });

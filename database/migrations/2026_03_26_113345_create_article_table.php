@@ -18,7 +18,7 @@ return new class extends Migration
                 ->nullable()
                 ->unique();
             $table->longText('content');
-            $table->string('image')->nullable();
+            $table->string('image_url')->nullable();
             $table->string('created_by')->nullable();
             $table->string('uploaded_by')->nullable();
             $table->timestamps();

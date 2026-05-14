@@ -15,7 +15,7 @@
 
             <div class="bg-white rounded-3xl shadow-sm p-8">
 
-                <form action="{{ route('articles.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('articles.store') }}" method="POST">
                     @csrf
                                         
                     <div class="mb-6">
@@ -26,13 +26,16 @@
                                class="w-full border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none focus:border-purple-500"
                                placeholder="Contoh: 5 Cara Menenangkan Anak Saat Tantrum" required>
                     </div>                                                        
+
+                    <!-- Image URL -->
                     <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Gambar Cover / Thumbnail</label>
-                        <input type="file" 
-                               name="image"
-                               accept="image/jpeg,image/png,image/webp"
-                               class="w-full border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none">
-                        <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, WebP. Maksimal 5MB</p>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gambar Cover / Thumbnail (URL)</label>
+                        <input type="url" 
+                               name="image_url" 
+                               value="{{ old('image_url') }}"
+                               placeholder="https://example.com/gambar-artikel.jpg" 
+                               class="w-full border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none focus:border-purple-500">
+                        <p class="text-xs text-gray-500 mt-1">Masukkan link gambar (Google, Unsplash, Pinterest, dll)</p>
                     </div>
                     
                     <div class="mb-8">

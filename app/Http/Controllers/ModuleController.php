@@ -23,7 +23,7 @@ class ModuleController extends Controller
     public function index()
     {
         $parentModules = Module::where('type', 'parent')            
-            ->get();        
+            ->get();                
 
         return view('pages.user.modules.index_parent', compact('parentModules'));
     }
@@ -66,6 +66,7 @@ class ModuleController extends Controller
         $modules = Module::where('type', 'parent')
                         ->paginate(3);
         $articles = Article::paginate(3);
+        return response()->json($modules);
         return view('dashboard', compact('modules', 'articles'));
     }
 
@@ -154,7 +155,7 @@ class ModuleController extends Controller
         $modules = Module::with('creator')
                 ->orderBy('type')                
                 ->get();
-
+        // return response()->json($modules);
         return view('admin.modules.index', compact('modules'));
     }
 
@@ -164,6 +165,15 @@ class ModuleController extends Controller
     public function create()
     {
         return view('pages.admin.modules.create');
+    }
+
+    //ini function ditujukan untuk merubah game"nya
+    private function getGame($type)
+    {
+        return match($type) {
+            'quiz'  => 'games/quiz/index.html',
+            default => null,
+        };
     }
 
     /**
@@ -177,13 +187,10 @@ class ModuleController extends Controller
             'slug'          => Str::slug($request->title),
             'type'          => $request->type,
             'description'   => $request->description,
-            'content'       => $request->content,                        
+            'content'       => $request->content, 
+            'image_url'     => $request->image_url,                       
             'uploaded_by'   => $user->name,
-        ];        
-
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('modules/images', 'public');            
-        }        
+        ];                
 
         $module = Module::create($data);
 
@@ -192,28 +199,14 @@ class ModuleController extends Controller
                 'title'         => $section['title'],
                 'module_id'     => $module->id,
                 'content'       => $section['content'] ?? null,
-                'has_image'     => !empty($section['image']) ? 1 : 0,
-                'has_video'     => !empty($section['video']) ? 1 : 0,                
-                'has_game'     => !empty($section['game_type']) ? 1 : 0,
-            ];
-
-            if($request->hasFile("sections.$index.image")){
-                $detailData['image'] = $request->file("sections.$index.image")
-                        ->store('module-details/images', 'public');
-            }
-            if($request->hasFile("sections.$index.video")){
-                $detailData['video'] = $request->file("sections.$index.video")
-                        ->store('module-details/video', 'public');
-            }
-            if($request->game_type === 'quiz'){
-                $detailData['game_file'] = 'games/quiz/index.html';
-            }
-            if($request->game_type === 'memory'){
-                $detailData['game_file'] = 'games/memory/index.html';
-            }
-            if($request->game_type === 'matching'){
-                $detailData['game_file'] = 'games/matching/index.html';
-            }
+                'has_image'     => !empty($section['image_url']) ? 1 : 0,
+                'has_video'     => !empty($section['video_url']) ? 1 : 0,                
+                'has_game'      => !empty($section['game_file']) ? 1 : 0,
+                'image_url'     => $section['image_url'] ?? null,
+                'video_url'     => $section['video_url'] ?? null,
+                'game_type'     => $section['game_type'] ?? null,
+                'game_file'     => $this->getGame($section['game_type']) ?? null,
+            ];            
 
             ModuleDetail::create($detailData);
         }
@@ -234,67 +227,16 @@ class ModuleController extends Controller
 
     /**
      * Update the specified resource in storage.
-     */    
-    // public function update(Module $module, Request $request)
-    // {
-    //     $request->validate([
-    //         'title'       => 'required|string|max:255',
-    //         'type'        => 'required|in:parent,children',
-    //         'description' => 'required|string',            
-    //         'sections.*.title'   => 'required|string|max:255',
-    //         'sections.*.content' => 'nullable|string',            
-    //     ]);
-    //     try {
-    //         DB::BeginTransaction();
-    //         $module->update([
-    //             'title'       => $request->title,
-    //             'slug'        => Str::slug($request->title),
-    //             'type'        => $request->type,
-    //             'description' => $request->description,
-    //         ]);
-    //         $module->sections()->delete();
-
-    //         foreach($request->input('sections') as $index => $section){
-    //             $detailData = [
-    //                 'user_id'    => Auth::id(),
-    //                 'module_id'  => $module->id,
-    //                 'content'    => $section['content'] ?? null,
-    //                 'has_image'  => $request->hasFile("images.$index") ? 1 : 0,
-    //                 'has_video'  => $request->hasFile("videos.$index") ? 1 : 0,
-    //             ];
-
-    //             if ($request->hasFile("images.$index")) {
-    //                 $detailData['image'] = $request->file("images.$index")->store('module-details/images', 'public');
-    //             }
-
-    //             if ($request->hasFile("videos.$index")) {
-    //                 $detailData['video'] = $request->file("videos.$index")->store('module-details/videos', 'public');
-    //             }
-
-    //             ModuleDetail::create($detailData);
-    //         }
-    //         DB::commit();
-    //         return redirect()->route('admin.dashboard')
-    //                         ->with('success', 'Module berhasil diperbarui!');
-    //     } catch (\Exception $e) {
-    //         DB::rollback();
-    //         \Log::error('Error saat update Module: ' . $e->getMessage());
-    //         return redirect()->back()
-    //             ->with('error', 'Gagal membuat transaksi. Silakan coba lagi.')
-    //             ->withInput();
-    //     }                       
-    // }
+     */        
     public function update(Request $request, Module $module)
     {
+
         $request->validate([
             'title'       => 'required|string|max:255',
             'type'        => 'required|in:parent,children',
-            'description' => 'required|string',
-            'sections'    => 'required|array|min:1',
+            'description' => 'required|string',            
             'sections.*.title'   => 'required|string|max:255',
-            'sections.*.content' => 'nullable|string',
-            'images.*'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
-            'videos.*'    => 'nullable|file|mimes:mp4,webm|max:51200',
+            'sections.*.content' => 'nullable|string',          
         ]);
 
         try {
@@ -308,28 +250,26 @@ class ModuleController extends Controller
                 'description' => $request->description,
             ]);
 
-            // Hapus semua sub-bab lama (karena kamu pakai array input baru)
-            $module->details()->delete();   // pastikan relationship 'details()' sudah ada di model Module
+            if ($request->hasFile('image')) {
+                $data['image'] = $request->file('image')->store('modules/images', 'public');            
+            } 
 
-            // Simpan ulang semua sub-bab
+            $module->sections()->delete();
+
             foreach ($request->sections as $index => $section) {
                 $detailData = [
-                    'user_id'    => Auth::id(),
-                    'module_id'  => $module->id,
-                    'content'    => $section['content'] ?? null,
-                    'has_image'  => $request->hasFile("images.$index") ? 1 : 0,
-                    'has_video'  => $request->hasFile("videos.$index") ? 1 : 0,
-                ];
-
-                // Upload Image jika ada
-                if ($request->hasFile("images.$index")) {
-                    $detailData['image'] = $request->file("images.$index")->store('module-details/images', 'public');
-                }
-
-                // Upload Video jika ada
-                if ($request->hasFile("videos.$index")) {
-                    $detailData['video'] = $request->file("videos.$index")->store('module-details/videos', 'public');
-                }
+                    'user_id'       => Auth::id(),
+                    'module_id'     => $module->id,
+                    'title'         => $section['title'],
+                    'content'       => $section['content'] ?? null,
+                    'has_image'     => $request->hasFile("images.$index") ? 1 : 0,
+                    'has_video'     => $request->hasFile("videos.$index") ? 1 : 0,
+                    'has_game'      => !empty($section['game_type']) ? 1 : 0,
+                    'image_url'     => $section['image_url'] ?? null,
+                    'video_url'     => $section['video_url'] ?? null,
+                    'game_type'     => $section['game_type'] ?? null,
+                    'game_file'     => $this->getGame($section['game_type']) ?? null,
+                ];                
 
                 ModuleDetail::create($detailData);
             }
@@ -344,7 +284,7 @@ class ModuleController extends Controller
             \Log::error('Update Module Error: ' . $e->getMessage());
 
             return redirect()->back()
-                            ->with('error', 'Terjadi kesalahan saat memperbarui module. Silakan coba lagi.')
+                            ->with('error', 'Terjadi kesalahan saat memperbarui module.')
                             ->withInput();
         }
     }
@@ -352,20 +292,11 @@ class ModuleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        if ($module->image) {
-            \Storage::disk('public')->delete($module->image);
-        }
+    public function destroy(Module $module)
+    {            
+        $module->delete();        
 
-        foreach ($module->details as $detail) {
-            if ($detail->image) \Storage::disk('public')->delete($detail->image);
-            if ($detail->video) \Storage::disk('public')->delete($detail->video);
-        }
-
-        $module->delete();
-
-        return redirect()->route('admin.dashboard')
+        return redirect()->route('adminDashboard')
                         ->with('success', 'Module berhasil dihapus');
     }
 }

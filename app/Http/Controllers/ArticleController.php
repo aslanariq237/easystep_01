@@ -35,7 +35,7 @@ class ArticleController extends Controller
         $validated = $request->validate([
             'title'    => 'required|string|max:255',            
             'content'  => 'required|string',
-            'image'    => 'nullable|image|mimes:jpeg,png,webp,jpg|max:5120',
+            'image_url'=> 'string',
         ]);
 
         $data = [
@@ -43,12 +43,8 @@ class ArticleController extends Controller
             'slug'       => \Str::slug($validated['title']),
             'content'    => $validated['content'],                        
             'uploaded_by'=> Auth::user()->name,
-        ];
-
-        // Upload Image
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('articles/images', 'public');
-        }
+            'image_url'  => $validated['image_url']
+        ];                
 
         Article::create($data);
 

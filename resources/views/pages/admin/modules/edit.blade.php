@@ -11,7 +11,6 @@
 
                 <form action="{{ route('modules.update', $module) }}" 
                       method="POST" 
-                      enctype="multipart/form-data" 
                       id="moduleForm">
 
                     @csrf
@@ -33,13 +32,19 @@
                         </div>
                     </div>
 
+                    <!-- Cover Image URL -->
                     <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Gambar Cover (Opsional)</label>
-                        <input type="file" name="image" accept="image/*" class="w-full border border-gray-300 rounded-2xl px-5 py-4">
-                        @if($module->image)
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gambar Cover (URL)</label>
+                        <input type="url" name="image_url" 
+                               value="{{ old('image_url', $module->image_url ?? '') }}"
+                               placeholder="https://example.com/gambar.jpg" 
+                               class="w-full border border-gray-300 rounded-2xl px-5 py-4">
+                        @if($module->image_url)
                         <div class="mt-4">
-                            <p class="text-sm text-gray-500 mb-2">Gambar Saat Ini:</p>
-                            <img src="{{ asset('storage/' . $module->image) }}" class="h-40 object-cover rounded-xl border">
+                            <p class="text-sm text-gray-500 mb-2">Preview Gambar Saat Ini:</p>
+                            <img src="{{ $module->image_url }}" 
+                                 alt="Current Image" 
+                                 class="h-40 object-cover rounded-xl border">
                         </div>
                         @endif
                     </div>
@@ -79,18 +84,16 @@
     <script>
         let sectionCount = 0;
 
-        function addSection(title = '', content = '', existingImage = '', hasImage = false, hasVideo = false, hasGame = false) {
+        function addSection(title = '', content = '', imageUrl = '', videoUrl = '', gameType = '') {
             sectionCount++;
             const container = document.getElementById('sections-container');
-
-            let imagePreview = existingImage ? 
-                `<div class="mt-2"><img src="${existingImage}" class="h-24 object-cover rounded-xl border"></div>` : '';
 
             const html = `
                 <div class="section-item border border-gray-200 rounded-3xl p-6 mb-6 bg-gray-50">
                     <div class="flex justify-between mb-4">
                         <h3 class="font-medium">Sub-bab <span class="section-number">${sectionCount}</span></h3>
-                        <button type="button" onclick="removeSection(this)" class="text-red-600 hover:text-red-700 text-sm font-medium">Hapus</button>
+                        <button type="button" onclick="removeSection(this)" 
+                                class="text-red-600 hover:text-red-700 text-sm font-medium">Hapus</button>
                     </div>
 
                     <div class="space-y-6">
@@ -106,52 +109,43 @@
                                       class="w-full border border-gray-300 rounded-2xl px-5 py-4">${content}</textarea>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Image URL -->
                             <div>
-                                <label class="flex items-center gap-2 mb-3">
-                                    <input type="checkbox" class="has-image-check" onchange="toggleInput(this)" ${hasImage ? 'checked' : ''}>
-                                    <span class="text-sm font-medium text-gray-700">Has Image</span>
-                                </label>
-                                <input type="file" name="images[${sectionCount-1}]" accept="image/*" 
-                                       class="image-input w-full ${hasImage ? '' : 'hidden'}">
-                                ${imagePreview}
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Gambar (URL)</label>
+                                <input type="url" 
+                                       name="sections[${sectionCount-1}][image_url]" 
+                                       value="${imageUrl}"
+                                       placeholder="https://..." 
+                                       class="w-full border border-gray-300 rounded-2xl px-5 py-4">
                             </div>
 
+                            <!-- Video URL -->
                             <div>
-                                <label class="flex items-center gap-2 mb-3">
-                                    <input type="checkbox" class="has-video-check" onchange="toggleInput(this)" ${hasVideo ? 'checked' : ''}>
-                                    <span class="text-sm font-medium text-gray-700">Has Video</span>
-                                </label>
-                                <input type="file" name="videos[${sectionCount-1}]" accept="video/mp4,video/webm" 
-                                       class="video-input w-full ${hasVideo ? '' : 'hidden'}">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Video (YouTube URL)</label>
+                                <input type="url" 
+                                       name="sections[${sectionCount-1}][video_url]" 
+                                       value="${videoUrl}"
+                                       placeholder="https://youtu.be/..." 
+                                       class="w-full border border-gray-300 rounded-2xl px-5 py-4">
                             </div>
+                        </div>
 
-                            <div>
-                                <label class="flex items-center gap-2 mb-3">
-                                    <input type="checkbox" class="has-game-check" onchange="toggleInput(this)" ${hasGame ? 'checked' : ''}>
-                                    <span class="text-sm font-medium text-gray-700">Has Game</span>
-                                </label>
-                                <select name="sections[${sectionCount-1}][game_type]" 
-                                        class="game-input w-full border border-gray-300 rounded-2xl px-5 py-4 ${hasGame ? '' : 'hidden'}">
-                                    <option value="">Pilih Game</option>
-                                    <option value="quiz">Quiz</option>
-                                    <option value="memory">Memory Match</option>
-                                </select>
-                            </div>
+                        <!-- Game -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Mini Game (Opsional)</label>
+                            <select name="sections[${sectionCount-1}][game_type]" 
+                                    class="w-full border border-gray-300 rounded-2xl px-5 py-4">
+                                <option value="">Tidak Ada Game</option>
+                                <option value="quiz" ${gameType === 'quiz' ? 'selected' : ''}>Quiz Hewan</option>
+                                <option value="memory" ${gameType === 'memory' ? 'selected' : ''}>Memory Match</option>
+                            </select>
                         </div>
                     </div>
                 </div>
             `;
 
             container.insertAdjacentHTML('beforeend', html);
-        }
-
-        function toggleInput(checkbox) {
-            const parent = checkbox.parentElement.parentElement;
-            const input = parent.querySelector('input[type="file"], select');
-            if (input) {
-                input.classList.toggle('hidden', !checkbox.checked);
-            }
         }
 
         function removeSection(btn) {
@@ -162,7 +156,9 @@
         }
 
         function updateSectionNumbers() {
-            document.querySelectorAll('.section-number').forEach((el, i) => el.textContent = i + 1);
+            document.querySelectorAll('.section-number').forEach((el, i) => {
+                el.textContent = i + 1;
+            });
         }
 
         // Load existing sections
@@ -171,10 +167,9 @@
                 addSection(
                     "{{ addslashes($section->title ?? '') }}",
                     {!! json_encode($section->content ?? '') !!},
-                    "{{ $section->image ? asset('storage/' . $section->image) : '' }}",
-                    {{ $section->has_image ? 'true' : 'false' }},
-                    {{ $section->has_video ? 'true' : 'false' }},
-                    {{ $section->has_game ? 'true' : 'false' }}
+                    "{{ $section->image_url ?? '' }}",
+                    "{{ $section->video_url ?? '' }}",
+                    "{{ $section->game_type ?? '' }}"
                 );
             @endforeach
         @else

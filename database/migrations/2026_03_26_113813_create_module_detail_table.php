@@ -23,8 +23,8 @@ return new class extends Migration
             $table->boolean('has_image')->default(false);
             $table->boolean('has_video')->default(false);
             $table->boolean('has_game')->default(false);
-            $table->string('image')->nullable();
-            $table->string('video')->nullable();
+            $table->string('image_url')->nullable();
+            $table->string('video_url')->nullable();
             $table->enum('game_type', [
                 'quiz',
                 'memory',

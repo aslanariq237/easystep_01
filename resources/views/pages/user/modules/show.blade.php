@@ -11,9 +11,9 @@
             </div>
         </div>
         <div class="max-w-5xl mx-auto px-4 py-10">            
-            @if($module->image)
+            @if($module->image_url)
             <div class="rounded-3xl overflow-hidden shadow-md mb-10">
-                <img src="{{ asset('storage/' . $module->image) }}" 
+                <img src="{{ $module->image_url }}" 
                      alt="{{ $module->title }}"
                      class="w-full h-auto max-h-[450px] object-cover">
             </div>

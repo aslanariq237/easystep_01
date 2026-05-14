@@ -114,8 +114,8 @@
                     @foreach($recentModules as $module)
                         <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group">
                             
-                            @if($module->image)
-                            <img src="{{ asset('storage/' . $module->image) }}" 
+                            @if($module->image_url)
+                            <img src="{{ $module->image_url }}" 
                                 alt="{{ $module->title }}" 
                                 class="w-full h-48 object-cover">
                             @else

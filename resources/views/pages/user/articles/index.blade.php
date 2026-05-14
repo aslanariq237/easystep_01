@@ -49,7 +49,7 @@
                     @foreach($articles as $article)
                     <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-100">
                         <div class="h-56 bg-gray-200 relative">
-                            <img src="{{ $article->image ? Storage::url($article->image) : 'https://source.unsplash.com/random/600x400/?parenting,child&sig=' . $article->id }}" 
+                            <img src="{{ $article->image_url}}" 
                                  alt="{{ $article->title }}" 
                                  class="w-full h-full object-cover">
                         </div>
