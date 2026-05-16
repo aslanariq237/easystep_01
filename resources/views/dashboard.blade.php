@@ -66,8 +66,8 @@
                     @foreach ($modules as $module)
                     <div class="bg-white rounded-3xl overflow-hidden shadow hover:shadow-md transition border border-gray-100">
                         <div class="h-48 bg-gray-200 relative">
-                            @if($module->image)
-                            <img src="{{ asset('storage/' . $module->image) }}" 
+                            @if($module->image_url)
+                            <img src="{{ $module->image_url }}" 
                                 alt="{{ $module->title }}" 
                                 class="w-full h-full object-cover">
                             @else
@@ -112,8 +112,8 @@
                     @foreach ($articles as $article)
                     <div class="bg-white rounded-3xl p-6 flex gap-5 hover:shadow transition border border-gray-100">
                         <div class="w-28 h-28 flex-shrink-0 bg-gray-200 rounded-2xl overflow-hidden">
-                            @if($article->image)
-                            <img src="{{ asset('storage/' . $article->image) }}" 
+                            @if($article->image_url)
+                            <img src="{{ $article->image_url }}" 
                                 alt="{{ $article->title }}" 
                                 class="w-full h-full object-cover">
                             @else

@@ -49,10 +49,16 @@
                     @foreach($articles as $article)
                     <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-100">
                         <div class="h-56 bg-gray-200 relative">
-                            <img src="{{ $article->image_url}}" 
-                                 alt="{{ $article->title }}" 
-                                 class="w-full h-full object-cover">
-                        </div>
+                            @if($article->image_url)
+                                <img src="{{ $article->image_url}}" 
+                                    alt="{{ $article->title }}" 
+                                    class="w-full h-full object-cover">
+                            @else
+                                <div class="h-48 bg-gray-200 flex items-center justify-center text-6xl">
+                                    📖
+                                </div>
+                            @endif
+                        </div>                        
                         
                         <div class="p-6">
                             <div class="flex items-center gap-2 text-emerald-600 text-xs font-medium mb-3">
