@@ -51,13 +51,15 @@ class ModuleController extends Controller
         $totalForumPosts = ForumPost::count();
 
         $recentModules = Module::latest()->take(6)->get();
+        $recentArticles = Article::latest()->take(6)->get();
 
         return view('pages.admin.dashboard', compact(
             'totalModules',
             'totalArticles',
             'totalParents',
             'totalForumPosts',
-            'recentModules'
+            'recentModules',
+            'recentArticles'
         ));
     }
 
