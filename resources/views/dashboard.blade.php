@@ -145,24 +145,33 @@
 
         </div>
     </div>    
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden z-50">
-        <div class="max-w-xl mx-auto grid grid-cols-4 py-2 text-center">
-            <a href="{{ route('dashboard') }}" class="flex flex-col items-center text-purple-600">
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden z-50 shadow-lg">
+        <div class="max-w-xl mx-auto grid grid-cols-4 py-2 text-center">            
+            <a href="{{ route('dashboard') }}" 
+            class="flex flex-col items-center py-2 rounded-2xl mx-1 transition-all
+                    {{ request()->is('/') || request()->is('dashboard') ? 'bg-purple-100 text-purple-600' : 'text-gray-500 hover:text-gray-700' }}">
                 <span class="text-3xl">🏠</span>
                 <span class="text-[10px] mt-1 font-medium">Home</span>
-            </a>
-            <a href="{{ route('modules.index') }}" class="flex flex-col items-center text-gray-500 hover:text-gray-700">
+            </a>            
+            <a href="{{ route('modules.index') }}" 
+            class="flex flex-col items-center py-2 rounded-2xl mx-1 transition-all
+                    {{ request()->is('modules*') || request()->is('module_*') ? 'bg-purple-100 text-purple-600' : 'text-gray-500 hover:text-gray-700' }}">
                 <span class="text-3xl">📚</span>
                 <span class="text-[10px] mt-1 font-medium">Modul</span>
-            </a>
-            <a href="{{ route('articles.index') }}" class="flex flex-col items-center text-gray-500 hover:text-gray-700">
+            </a>            
+            <a href="{{ route('articles.index') }}" 
+            class="flex flex-col items-center py-2 rounded-2xl mx-1 transition-all
+                    {{ request()->is('articles*') ? 'bg-purple-100 text-purple-600' : 'text-gray-500 hover:text-gray-700' }}">
                 <span class="text-3xl">📖</span>
                 <span class="text-[10px] mt-1 font-medium">Artikel</span>
-            </a>
-            <a href="{{ route('forum.index') }}" class="flex flex-col items-center text-gray-500 hover:text-gray-700">
+            </a>            
+            <a href="{{ route('forum.index') }}" 
+            class="flex flex-col items-center py-2 rounded-2xl mx-1 transition-all
+                    {{ request()->is('forum*') ? 'bg-purple-100 text-purple-600' : 'text-gray-500 hover:text-gray-700' }}">
                 <span class="text-3xl">💬</span>
                 <span class="text-[10px] mt-1 font-medium">Forum</span>
             </a>
+
         </div>
     </div>
 </x-app-layout>

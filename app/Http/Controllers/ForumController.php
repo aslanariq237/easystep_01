@@ -112,16 +112,37 @@ class ForumController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, ForumPost $forumPost)
     {
-        //
+        if(Auth::id() !== $forumPost->user_id){
+            abort(403, 'Unauthorized');
+        }
+        $request->validate([
+            'content'   => 'required|string',
+        ]);
+
+        $forumPost->update([
+            'content'   => $request->content,
+        ]);
+
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Postingan berhasil diperbarui',
+            'content'   => $forumPost->content
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(ForumPost $forumPost)
     {
-        //
+        if(Auth::id() !== $forumPost->user_id) {
+            abort(403, 'Unauthorized');
+        }
+
+        $forumPost->delete();
+        return redirect()->route('forum.index')
+                         ->with('success', 'Postingan Berhasil diHapus');
     }
 }

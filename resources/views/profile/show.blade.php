@@ -9,9 +9,9 @@
                     <div class="text-center md:text-left flex-1">
                         <h1 class="text-4xl font-bold text-gray-800">{{ $user->name }}</h1>
                         <p class="text-gray-500 mt-1">{{ $user->email }}</p>
-                        <span class="inline-block mt-4 px-5 py-1.5 bg-purple-100 text-purple-700 text-sm font-medium rounded-full">
+                        {{-- <span class="inline-block mt-4 px-5 py-1.5 bg-purple-100 text-purple-700 text-sm font-medium rounded-full">
                             {{ ucfirst($user->role) }}
-                        </span>
+                        </span> --}}
                     </div>
                 </div>
             </div>            
@@ -42,11 +42,7 @@
                     <div class="flex justify-between py-3 border-b">
                         <span class="text-gray-600">Email</span>
                         <span class="font-medium">{{ $user->email }}</span>
-                    </div>
-                    <div class="flex justify-between py-3 border-b">
-                        <span class="text-gray-600">Role</span>
-                        <span class="font-medium capitalize">{{ $user->role }}</span>
-                    </div>
+                    </div>                    
                     <div class="flex justify-between py-3">
                         <span class="text-gray-600">Bergabung Sejak</span>
                         <span class="font-medium">{{ $user->created_at->format('d F Y') }}</span>

@@ -1,15 +1,20 @@
 <nav class="bg-gradient-to-r from-purple-600 to-indigo-600 border-b sticky top-0 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center h-16">            
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">
-                    E
-                </div>
-                <div>
-                    <a href="/"><h1 class="text-xl font-bold text-white">EasyStep</h1></a>
-                    <p class="text-[10px] text-gray-200 -mt-1">Parenting Journey</p>
-                </div>
-            </div>            
+            <a href="/">
+                <div class="flex items-center gap-3">                
+                    <div class="w-9 h-9 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">
+                        E
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white">EasyStep</h1>
+                        <p class="text-[10px] text-gray-200 -mt-1">Parenting Journey</p>
+                    </div>                
+                </div>        
+            </a>    
+            @php
+                $userRole = Auth::user()->roles()->first()?->name ?? 'user';
+            @endphp            
             <div class="hidden md:flex items-center gap-8">
                 <a href="{{ route('dashboard') }}" 
                    class="text-white hover:text-gray-300 font-medium transition">Home</a>                
@@ -51,7 +56,7 @@
                     <button class="flex items-center gap-3 focus:outline-none">
                         <div class="text-right hidden md:block">
                             <p class="text-sm font-medium text-white">{{ Auth::user()->name ?? 'Parent' }}</p>
-                            <p class="text-xs text-gray-500">{{ ucfirst(Auth::user()->role) }}</p>
+                            {{-- <p class="text-xs text-gray-500">{{ $userRole }}</p> --}}                            
                         </div>
                         <div class="w-9 h-9 bg-purple-100 rounded-2xl flex items-center justify-center text-2xl border-2 border-white shadow">
                             👨‍👩‍👧
@@ -59,7 +64,12 @@
                     </button>                    
                     <div class="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 hidden group-hover:block">
                         <div class="px-5 py-3 border-b">
-                            <p class="font-medium">{{ Auth::user()->name }}</p>
+                            <p class="font-medium">{{ Auth::user()->name }}
+                                <span class="text-xs font-medium px-3 py-1 rounded-full 
+                                    {{ $userRole === 'admin' ? 'bg-red-100 text-red-700' : 'bg-purple-100 text-purple-700' }}">
+                                    ({{ ucfirst($userRole) }})
+                                </span>
+                            </p>
                             <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
                         </div>
                         <a href="/profile" class="block px-5 py-3 hover:bg-gray-50 text-sm">Profile Saya</a>
