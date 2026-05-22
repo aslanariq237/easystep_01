@@ -8,60 +8,86 @@
     <style>
         body { font-family: system-ui, sans-serif; }
         .option { 
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            transition: all 0.4s cubic-bezier(0.4, 0.8, 0.2, 1); 
         }
         .option:hover { 
-            transform: scale(1.08) translateY(-4px); 
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            transform: scale(1.12) translateY(-8px); 
+            box-shadow: 0 30px 40px -15px rgb(16 185 129 / 0.3);
         }
-        .correct { animation: correctAnim 0.6s; }
-        .wrong { animation: wrongAnim 0.4s; }
-        @keyframes correctAnim {
-            0% { transform: scale(0.8); }
-            50% { transform: scale(1.15); }
+        .correct { 
+            animation: correctPop 0.6s ease; 
+            border-color: #10b981 !important;
+            background-color: #ecfdf5 !important;
+        }
+        .wrong { 
+            animation: shake 0.4s ease; 
+        }
+        @keyframes correctPop {
+            0% { transform: scale(0.6); }
+            50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
-        @keyframes wrongAnim {
+        @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
+            25% { transform: translateX(-12px); }
+            75% { transform: translateX(12px); }
+        }
+        .animal-circle {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            background: white;
+            border-radius: 9999px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-emerald-100 via-teal-50 to-sky-100 min-h-screen">
+<body class="bg-gradient-to-br from-yellow-100 via-emerald-100 to-sky-100 min-h-screen">
 
     <div class="max-w-2xl mx-auto p-6">
-        <!-- Header -->
+        <!-- Fun Header -->
         <div class="text-center mb-10">
-            <div class="inline-flex items-center gap-3 bg-white rounded-3xl px-6 py-3 shadow-md mb-4">
-                <span class="text-4xl">🐘</span>
-                <span class="text-4xl">🦒</span>
-                <span class="text-4xl">🐰</span>
+            <div class="flex justify-center gap-4 mb-6">
+                <span class="text-6xl animate-bounce">🐘</span>
+                <span class="text-6xl animate-bounce delay-150">🦒</span>
+                <span class="text-6xl animate-bounce delay-300">🐰</span>
+                <span class="text-6xl animate-bounce delay-500">🦁</span>
             </div>
-            <h1 class="text-5xl font-bold text-emerald-700 mb-2 tracking-tight">
-                🐾 Quiz Hewan Seru!
+            <h1 class="text-6xl font-bold text-emerald-700 tracking-tighter drop-shadow-md">
+                🐾 QUIZ HEWAN SERU!
             </h1>
-            <p class="text-emerald-600 text-lg">Tebak jawabannya yuk!</p>
+            <p class="text-emerald-600 text-2xl mt-3 font-medium">Siap jadi ahli hewan?</p>
+        </div>
+
+        <!-- Progress -->
+        <div class="flex justify-between items-center mb-6 px-2">
+            <div class="text-sm font-medium text-emerald-700">
+                Pertanyaan <span id="current-q" class="font-bold">1</span>/5
+            </div>
+            <div class="h-2.5 w-40 bg-gray-200 rounded-full overflow-hidden">
+                <div id="progress" class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 w-1/5 transition-all"></div>
+            </div>
         </div>
 
         <!-- Question -->
-        <div class="bg-white rounded-3xl shadow-lg p-8 mb-8">
-            <div class="text-center">
-                <p id="question" class="text-2xl font-medium text-gray-800 leading-relaxed min-h-[80px]"></p>
-            </div>
+        <div class="bg-white rounded-3xl shadow-2xl p-10 mb-8 text-center">
+            <p id="question" class="text-3xl font-semibold text-gray-800 leading-relaxed min-h-[100px]"></p>
         </div>
 
         <!-- Options -->
-        <div class="space-y-4" id="options"></div>
+        <div class="space-y-5" id="options"></div>
 
         <!-- Result -->
-        <div id="result" class="hidden mt-8 text-center text-3xl font-bold"></div>
+        <div id="result" class="hidden mt-10 text-center"></div>
         
         <!-- Next Button -->
-        <div class="text-center mt-8">
+        <div class="text-center mt-10">
             <button onclick="nextQuestion()" id="next-btn"
-                    class="hidden bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-10 py-4 rounded-3xl font-semibold text-lg shadow-lg hover:shadow-xl transition">
-                Lanjut ke Pertanyaan Berikutnya →
+                    class="hidden bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-12 py-5 rounded-3xl font-bold text-xl shadow-xl hover:shadow-2xl transition-all">
+                Lanjut Pertanyaan Berikutnya →
             </button>
         </div>
     </div>
@@ -75,25 +101,25 @@
                 answer: 1
             },
             {
-                q: "Hewan apa yang memiliki leher paling panjang?",
+                q: "Hewan apa yang punya leher paling panjang?",
                 emoji: "🦒",
                 options: ["🐘 Gajah", "🦒 Jerapah", "🐎 Kuda", "🦓 Zebra"],
                 answer: 1
             },
             {
-                q: "Suara apa yang dihasilkan bebek?",
+                q: "Suara bebek itu seperti apa?",
                 emoji: "🦆",
-                options: ["🐱 Miau", "🐶 Guk-guk", "🦆 Kwek-kwek", "🐑 Mbek-mbek"],
+                options: ["🐱 Miau", "🐶 Guk-guk", "🦆 Kwek-kwek", "🐑 Mbek"],
                 answer: 2
             },
             {
-                q: "Hewan apa yang bisa terbang tinggi?",
+                q: "Hewan apa yang bisa terbang?",
                 emoji: "🦅",
                 options: ["🐟 Ikan", "🐦 Burung", "🐍 Ular", "🐱 Kucing"],
                 answer: 1
             },
             {
-                q: "Hewan darat paling besar di dunia adalah?",
+                q: "Hewan darat terbesar di dunia adalah?",
                 emoji: "🐘",
                 options: ["🐘 Gajah", "🦏 Badak", "🦁 Singa", "🐻 Beruang"],
                 answer: 0
@@ -102,18 +128,19 @@
 
         let current = 0;
         let score = 0;
-        
-        //sudah di tambahkan untuk gambar dan ini hanya untuk perulangan
+
         function loadQuestion() {
             const q = questions[current];
             document.getElementById('question').innerHTML = `${q.emoji} ${q.q}`;
+            document.getElementById('current-q').textContent = current + 1;
+            document.getElementById('progress').style.width = `${((current + 1) / questions.length) * 100}%`;
 
             let html = '';
             q.options.forEach((opt, i) => {
                 html += `
                     <button onclick="checkAnswer(${i})" 
-                            class="option w-full text-left p-6 bg-white hover:bg-emerald-50 border-2 border-emerald-200 rounded-3xl text-xl font-medium flex items-center gap-4">
-                        <span class="text-3xl">${opt.split(' ')[0]}</span>
+                            class="option w-full text-left p-6 bg-white hover:bg-emerald-50 border-2 border-emerald-200 rounded-3xl text-2xl font-medium flex items-center gap-6">
+                        <span class="text-5xl">${opt.split(' ')[0]}</span>
                         <span>${opt.split(' ').slice(1).join(' ')}</span>
                     </button>`;
             });
@@ -129,14 +156,14 @@
             if (selected === q.answer) {
                 score++;
                 resultDiv.innerHTML = `
-                    <span class="text-green-600 text-4xl">🎉 Benar Sekali!</span>
-                    <p class="text-xl mt-3">Kamu hebat! 🥳</p>`;
-                resultDiv.classList.add('correct');
+                    <div class="text-7xl mb-4">🎉</div>
+                    <span class="text-green-600 text-5xl font-bold">Benar Sekali!</span>
+                    <p class="text-2xl text-emerald-600 mt-3">Kamu hebat banget! 🥳</p>`;
             } else {
                 resultDiv.innerHTML = `
-                    <span class="text-red-600 text-4xl">😔 Salah</span>
-                    <p class="text-xl mt-3">Jawaban yang benar: <strong>${q.options[q.answer]}</strong></p>`;
-                resultDiv.classList.add('wrong');
+                    <div class="text-6xl mb-4">😔</div>
+                    <span class="text-red-500 text-4xl">Salah</span>
+                    <p class="text-xl mt-4">Jawaban yang benar: <strong class="text-emerald-600">${q.options[q.answer]}</strong></p>`;
             }
 
             resultDiv.classList.remove('hidden');
@@ -154,20 +181,17 @@
 
         function showFinalScore() {
             const percentage = Math.round((score / questions.length) * 100);
-            let message = '';
-
-            if (percentage >= 80) message = "Kamu luar biasa! 🏆";
-            else if (percentage >= 60) message = "Bagus sekali! 👍";
-            else message = "Terus belajar ya! 💪";
+            let message = percentage >= 80 ? "Kamu Juara Hewan! 🏆" : 
+                         percentage >= 60 ? "Sangat Bagus! 👍" : "Keren! Terus Belajar ya 💪";
 
             document.getElementById('options').innerHTML = `
-                <div class="text-center py-16 bg-white rounded-3xl shadow-xl">
-                    <div class="text-7xl mb-6">🏆</div>
-                    <h2 class="text-5xl font-bold text-emerald-600 mb-4">${score}/${questions.length}</h2>
-                    <p class="text-2xl text-gray-700 mb-6">${percentage}% Benar</p>
-                    <p class="text-xl text-gray-600">${message}</p>
+                <div class="text-center py-20 bg-white rounded-3xl shadow-2xl">
+                    <div class="text-8xl mb-6">🎊</div>
+                    <h2 class="text-6xl font-bold text-emerald-600 mb-2">${score}/${questions.length}</h2>
+                    <p class="text-3xl text-gray-700">${percentage}% Benar</p>
+                    <p class="text-2xl mt-6 text-emerald-700">${message}</p>
                     <button onclick="restartQuiz()" 
-                            class="mt-10 bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-3xl text-lg font-medium">
+                            class="mt-12 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-12 py-5 rounded-3xl text-xl font-bold shadow-xl">
                         Main Lagi 🎮
                     </button>
                 </div>`;
