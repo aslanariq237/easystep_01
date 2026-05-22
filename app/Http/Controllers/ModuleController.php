@@ -47,11 +47,12 @@ class ModuleController extends Controller
     {   
         $totalModules = Module::count();
         $totalArticles = Article::count();
-        $totalParents = User::role('admin')->count();
+        $totalParents = User::role('parent')->count();
         $totalForumPosts = ForumPost::count();
 
         $recentModules = Module::latest()->take(6)->get();
         $recentArticles = Article::latest()->take(6)->get();
+        $parents = User::role('parent')->get();
 
         return view('pages.admin.dashboard', compact(
             'totalModules',
@@ -59,7 +60,8 @@ class ModuleController extends Controller
             'totalParents',
             'totalForumPosts',
             'recentModules',
-            'recentArticles'
+            'recentArticles',
+            'parents'
         ));
     }
 
