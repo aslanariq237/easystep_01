@@ -138,13 +138,13 @@ class ModuleController extends Controller
 
         $type = $module->type;        
 
-        $progress = ModuleAccessHistory::firstOrCreate(
+        $progress = ModuleAccessHistory::updateOrCreate(
             [
                 'user_id'   => $user->id,
-                'module_id' => $module->id,
-                'type'      => $type,
+                'module_id' => $module->id,                
             ],
             [                
+                'type'      => $type,
                 'accessed_at'      => now(),
             ]
         );   
