@@ -136,21 +136,20 @@ class ModuleController extends Controller
     {
         $user = auth()->user();
 
-        $type = $module->type;        
-
-        $progress = ModuleAccessHistory::updateOrCreate(
+        ModuleAccessHistory::updateOrCreate(
             [
                 'user_id'   => $user->id,
-                'module_id' => $module->id,                
+                'module_id' => $module->id,
             ],
-            [                
-                'type'      => $type,
-                'accessed_at'      => now(),
+            [
+                'type'        => $module->type,
+                'accessed_at' => now(),
             ]
-        );   
-        $progress = $module->getProgressForUser($user->id);        
+        );
 
-        return view('pages.user.modules.show', compact('module', 'progress'));        
+        $progress = $module->getProgressForUser($user->id);
+
+        return view('pages.user.modules.show', compact('module', 'progress'));
     }
 
     //admin function disini
